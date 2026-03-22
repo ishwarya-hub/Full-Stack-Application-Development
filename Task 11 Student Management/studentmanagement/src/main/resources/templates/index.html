@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+ 
+<h2>Student Management System</h2>
+ 
+<!-- Add Student Link -->
+<a href="/showNewStudentForm">+ Add New Student</a>
+<br><br>
+ 
+<!-- Search by Department -->
+<form action="/searchByDepartment" method="get">
+    Search by Department:
+    <input type="text" name="department" />
+    <button type="submit">Search</button>
+</form>
+ 
+<!-- Search by Age -->
+<form action="/searchByAge" method="get">
+    Search Age Greater Than:
+    <input type="number" name="age" />
+    <button type="submit">Search</button>
+</form>
+ 
+<!-- Student Table -->
+<table border="1">
+    <tr>
+        <th><a th:href="@{/page/0(sortField='name')}">Name</a></th>
+        <th><a th:href="@{/page/0(sortField='department')}">Department</a></th>
+        <th><a th:href="@{/page/0(sortField='age')}">Age</a></th>
+        <th><a th:href="@{/page/0(sortField='marks')}">Marks</a></th>
+        <th>Action</th>
+    </tr>
+ 
+    <tr th:each="student : ${studentList}">
+        <td th:text="${student.name}"></td>
+        <td th:text="${student.department}"></td>
+        <td th:text="${student.age}"></td>
+        <td th:text="${student.marks}"></td>
+        <td>
+            <a th:href="@{/showFormForUpdate/{id}(id=${student.id})}">Edit</a>
+            |
+            <a th:href="@{/deleteStudent/{id}(id=${student.id})}">Delete</a>
+        </td>
+    </tr>
+</table>
+ 
+<!-- Pagination -->
+<br>
+<div>
+    <a th:if="${currentPage > 0}"
+       th:href="@{/page/{p}(p=${currentPage - 1})}">Previous</a>
+ 
+    &nbsp; Page <span th:text="${currentPage + 1}"></span>
+    of <span th:text="${totalPages}"></span> &nbsp;
+ 
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{/page/{p}(p=${currentPage + 1})}">Next</a>
+</div>
+ 
+</body>
+</html>
